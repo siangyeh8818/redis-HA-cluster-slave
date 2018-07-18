@@ -1,0 +1,37 @@
+version: '2'
+services:
+  master:
+    image: redis:cluster-v4
+    ports:
+        - "6379:6379"
+#    volumes:
+#      - ./conf/master-1/redis-master.conf:/etc/redis/redis-master.conf
+#    command: redis-server /etc/redis/redis-master.conf
+    restart: unless-stopped
+  slave-1:
+    image: redis:cluster-v4
+    ports:
+        - "6382:6379"
+#    command: redis-server  /etc/redis/redis-master.conf
+    command: redis-server  --slaveof redis-master 6379
+#    volumes:
+#     - ./
+    restart: unless-stopped
+    depends_on:
+      - master
+    links:
+      - master:redis-master
+  slave-2:
+    image: redis:cluster-v4
+    ports:
+        - "6383:6379"
+#    command: redis-server  /etc/redis/redis-master.conf
+    command: redis-server  --slaveof redis-master 6379
+#    volumes:
+#     - ./redis/slave-2:/data
+    restart: unless-stopped
+    depends_on:
+      - master
+    links:
+      - master:redis-master
+

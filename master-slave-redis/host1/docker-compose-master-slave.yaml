@@ -1,0 +1,12 @@
+version: '2'
+services:
+  master:
+    image: redis:cluster-v4
+    network_mode: host
+    ports:
+        - "6379:6379"
+#    volumes:
+#      - ./conf/master-1/redis-master.conf:/etc/redis/redis-master.conf
+#    command: redis-server /etc/redis/redis-master.conf
+    restart: unless-stopped
+

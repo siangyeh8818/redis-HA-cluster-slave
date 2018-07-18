@@ -1,0 +1,95 @@
+version: '2'
+
+services:
+  master:
+    image: redis:cluster-v4
+    ports:
+        - "6379:6379"
+    volumes:
+      - ./conf/master-1/redis-master.conf:/etc/redis/redis-master.conf
+    command: redis-server /etc/redis/redis-master.conf
+    restart: unless-stopped
+  master-2:
+    image: redis:cluster-v4
+    ports:
+        - "6380:6379"
+    volumes:
+      - ./conf/master-2/redis-master.conf:/etc/redis/redis-master.conf
+    command: redis-server /etc/redis/redis-master.conf
+    restart: unless-stopped
+    depends_on:
+      - master
+  master-3:
+    image: redis:cluster-v4
+    ports:
+        - "6381:6379"
+    volumes:
+      - ./conf/master-3/redis-master.conf:/etc/redis/redis-master.conf
+    command: redis-server /etc/redis/redis-master.conf
+    restart: unless-stopped
+    depends_on:
+      - master-2
+  slave-1:
+    image: redis:cluster-v4
+    ports:
+        - "6382:6379"
+    command: redis-server  /etc/redis/redis-master.conf
+#    command: redis-server  /etc/redis/redis-slave.conf --slaveof redis-master 6379
+    volumes:
+     - ./
+    restart: unless-stopped
+    depends_on:
+      - master
+      - master-2
+      - master-3
+    links:
+      - master:redis-master
+  slave-2:
+    image: redis:cluster-v4
+    ports:
+        - "6383:6379"
+    command: redis-server  /etc/redis/redis-master.conf
+#    command: redis-server  /etc/redis/redis-slave.conf --slaveof redis-master 6379
+#    volumes:
+#     - ./redis/slave-2:/data
+    restart: unless-stopped
+    depends_on:
+      - master
+      - master-2
+      - master-3
+    links:
+      - master:redis-master
+  slave-3:
+    image: redis:cluster-v4
+    ports:
+        - "6384:6379"
+    command: redis-server  /etc/redis/redis-master.conf
+#    command: redis-server  /etc/redis/redis-slave.conf --slaveof redis-master 6379
+#    volumes:
+#     - ./redis/slave-3:/data
+    restart: unless-stopped
+    depends_on:
+      - master
+      - master-2
+      - master-3
+    links:
+      - master:redis-master
+#  redis-trib:
+#    image: zvelo/redis-trib
+#    command: echo "yes" | ruby /redis/src/redis-trib.rb create --replicas 1 master-1:6379 master-2:6379 master-3:6379 slave-1:6379 slave-2:6379 slave-3:6379
+#    depends_on:
+#      - master
+#      - master-2
+#      - master-3
+#      - slave-1
+#      - slave-2
+#      - slave-3
+#    command: create --replicas 1 master-1:6379 master-2:6379 master-3:6379 slave-1:6379 slave-2:6379 slave-3:6379
+#    links:
+#      - master:master-1
+#      - master-2:master-2
+#      - master-3:master-3
+#      - slave-1:slave-1
+#      - slave-2:slave-2
+#      - slave-3:slave-3
+

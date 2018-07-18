@@ -1,0 +1,13 @@
+version: '2'
+services:
+  slave-2:
+    image: redis:cluster-v4
+    network_mode: host
+    ports:
+        - "6379:6379"
+#    command: redis-server  /etc/redis/redis-master.conf
+    command: redis-server  --slaveof redis-master 6379
+#    volumes:
+#     - ./redis/slave-2:/data
+    restart: unless-stopped
+
