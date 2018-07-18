@@ -1,7 +1,7 @@
 version: '2'
 services:
   slave-1:
-    image: 172.16.101.70/ailab/redis:cluster-v6
+    image: 172.16.101.70/ailab/redis:cluster-v8
     network_mode: host
     ports:
         - "6382:6379"
