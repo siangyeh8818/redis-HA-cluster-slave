@@ -6,7 +6,7 @@ services:
     ports:
         - "6379:6379"
 #    command: redis-server  /etc/redis/redis-master.conf
-    command: redis-server /etc/redis/redis-password.conf --slaveof 172.16.101.74 6379
+    command: redis-server /etc/redis/redis-slave-password.conf --slaveof 172.16.101.74 6379
     volumes:
      - ./sentinel.conf:/etc/redis/sentinel.conf
     restart: unless-stopped
