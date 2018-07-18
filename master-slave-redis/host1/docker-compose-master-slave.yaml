@@ -1,12 +1,12 @@
 version: '2'
 services:
   master:
-    image: redis:cluster-v4
+    image: 172.16.101.70/ailab/redis:cluster-v6
     network_mode: host
     ports:
         - "6379:6379"
     volumes:
       - ./sentinel.conf:/etc/redis/sentinel.conf
-#    command: redis-server /etc/redis/redis-master.conf
+    command: redis-server /etc/redis/redis-password.conf
     restart: unless-stopped
 
