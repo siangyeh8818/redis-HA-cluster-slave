@@ -7,6 +7,7 @@ services:
         - "6379:6379"
     volumes:
       - ./sentinel.conf:/etc/redis/sentinel.conf
+      - ./redis-password.conf:/etc/redis/redis-password.conf
     command: redis-server /etc/redis/redis-password.conf
     restart: unless-stopped
 
