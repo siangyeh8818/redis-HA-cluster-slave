@@ -1,7 +1,7 @@
 version: '2'
 services:
   master:
-    image: 172.16.101.70/ailab/redis:cluster-v8
+    image: redis:sentinel-v2
     network_mode: host
     ports:
         - "6379:6379"
